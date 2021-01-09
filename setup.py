@@ -20,16 +20,19 @@ classifiers = [ 'Development Status :: 5 - Production/Stable'
               , 'Programming Language :: Python :: Implementation :: CPython'
               ]
 
-setup( author = 'Paul Jimenez'
-     , author_email = 'pj@place.org'
-     , classifiers = classifiers
-     , description = 'Minimal Application Configuration'
-     , name = 'mincfg'
-     , url = 'http://github.com/pjz/mincfg'
-     , packages = find_packages()
-     , version = '0.1'
-     , install_requires = [ ]
-     , extras_require = { 'yaml': ['pyyaml'] }
-     , zip_safe = False
-      )
+setup(  author = 'Paul Jimenez'
+      , author_email = 'pj@place.org'
+      , classifiers = classifiers
+      , description = 'Minimal Application Configuration'
+      , name = 'mincfg'
+      , url = 'http://github.com/pjz/mincfg'
+      , packages = find_packages()
+      , version = '0.1'
+      , install_requires = [ ]
+      , extras_require = {
+          'yaml': ['pyyaml'],
+          'dev': ['pytest', 'pytest-cov', 'pytest-pylint', 'pytest-mypy', 'wheel', 'pyyaml' ],
+          }
+      , zip_safe = False
+     )
 

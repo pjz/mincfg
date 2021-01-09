@@ -20,7 +20,7 @@ Much inspration - and the .get() signature - is taken from everett, but the impl
 
 import os
 import logging
-from abc import ABC
+from abc import ABC, abstractmethod
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Dict, List, Union, Optional
@@ -44,7 +44,7 @@ class ConfigSource(ABC):
         raise NotImplementedError
 
 
-class DictConfig(ConfigSource):
+class DictSource(ConfigSource):
     '''
     Uses the supplied dict as a config source.  Useful for defaults.
     '''
@@ -55,7 +55,7 @@ class DictConfig(ConfigSource):
         return self.cfg
 
 
-class OSEnvConfigSource(ConfigSource):
+class OSEnvironSource(ConfigSource):
     '''
     Uses os.environ as a config source, by parsing PREFIXd keys into hierarchical dictionaries, splitting on _
     '''
@@ -73,12 +73,12 @@ class OSEnvConfigSource(ConfigSource):
             *ns_list, key = key_path
             namespace = result
             for subns in ns_list:
-                namespace = namespace.setdefault(subns, as_dict())
+                namespace = namespace.setdefault(subns, dict())
             namespace[key] = os.environ[env_key]
         return result
 
 
-class YamlConfigFileSource(ConfigSource):
+class YamlFileSource(ConfigSource):
     '''
     A YAML file source of configuration information
     '''
@@ -87,9 +87,9 @@ class YamlConfigFileSource(ConfigSource):
 
     def as_dict(self) -> Dict[str, str]:
         if not self.path.exists():
-            return as_dict()
+            return dict()
         if not self.path.is_file():
-            return as_dict()
+            return dict()
         with self.path.open() as f:
             return yaml.safe_load(f)
 
@@ -101,7 +101,7 @@ def _recursive_dict_update(main: Dict, update: Dict):
     '''
     for k, v in update.items():
         lk = k.lower()
-        if isinstance(v, dict) and isinstance(main[lk], dict):
+        if isinstance(v, dict) and isinstance(main.get(lk), dict):
             _recursive_dict_update(main[lk], v)
         else:
             main[lk] = v
@@ -145,11 +145,12 @@ class MergedConfiguration:
         doc is extra information to supply with the error message
         '''
         k = key.lower()
+        ns = namespace or []
         in_ns = self.as_dict()
-        for subns in namespace:
+        for subns in ns:
             in_ns = in_ns[subns]
         if raise_error and default is None and k not in in_ns:
-            msg = f"Missing config key {'.'.join(namespace + [k])}"
+            msg = f"Missing config key {'.'.join(ns + [k])}"
             if doc:
                 msg += f": {doc}"
             raise KeyError(msg)
@@ -165,5 +166,4 @@ class MergedConfiguration:
         if not isinstance(in_ns, dict):
             raise ValueError("Need a sub-namespace (dict) to make a namespace")
         return SimpleNamespace(**in_ns)
-
 
