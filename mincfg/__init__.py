@@ -23,17 +23,20 @@ import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Union, Optional, Any
 
 import yaml
 
 logger = logging.getLogger(__name__)
 
+#CfgDict = Dict[str, Union[str, 'CfgDict']]  # the correct, recursive type... unsupported by mypy
+CfgDict = Dict[str, Any]
+
 
 class ConfigSource(ABC):
 
     @abstractmethod
-    def as_dict(self) -> Dict[str, str]:
+    def as_dict(self) -> CfgDict:
         '''
         return a dict containing configuration information from this source.
 
@@ -48,10 +51,10 @@ class DictSource(ConfigSource):
     '''
     Uses the supplied dict as a config source.  Useful for defaults.
     '''
-    def __init__(self, cfg_dict: Dict):
+    def __init__(self, cfg_dict: CfgDict):
         self.cfg = cfg_dict
 
-    def as_dict(self) -> Dict[str, str]:
+    def as_dict(self) -> CfgDict:
         return self.cfg
 
 
@@ -60,10 +63,10 @@ class OSEnvironSource(ConfigSource):
     Uses os.environ as a config source, by parsing PREFIXd keys into hierarchical dictionaries, splitting on _
     '''
     def __init__(self, prefix: str):
-        self.prefix = prefix.strip('_').upper() + '_'
+        self.prefix: str = prefix.strip('_').upper() + '_'
 
-    def as_dict(self) -> Dict[str, str]:
-        result = dict()
+    def as_dict(self) -> CfgDict:
+        result: CfgDict = dict()
         for env_key in os.environ:
             if not env_key.startswith(self.prefix):
                 continue
@@ -112,7 +115,8 @@ class MergedConfiguration:
     '''
     def __init__(self, sources: Optional[List[ConfigSource]] = None):
         self.sources: List[ConfigSource] = [] if sources is None else sources
-        self._loaded: Optional[Dict] = None
+        self._cfg: CfgDict = dict()
+        self._loaded: bool = False
 
     def add_source(self, source: ConfigSource):
         self.sources.append(source)
@@ -122,17 +126,19 @@ class MergedConfiguration:
         cause the config to be loaded; note that this need not be called directly, as it is lazily loaded.
         Subsequent calls _will_ re-load from the config sources.
         '''
-        loaded = dict()
+        cfg: CfgDict = dict()
         for source in self.sources:
             updates = source.as_dict()
-            _recursive_dict_update(loaded, updates)
-        self._loaded = loaded
+            _recursive_dict_update(cfg, updates)
+        self._cfg = cfg
 
-
-    def as_dict(self) -> Dict[str, str]:
-        if self._loaded is None:
+    def as_dict(self) -> CfgDict:
+        '''
+        return the entire configuration as a single dictionary
+        '''
+        if not self._loaded:
             self.load()
-        return self._loaded
+        return self._cfg
 
     def get(self, key: str, namespace: Optional[List[str]]=None, default=None, parser=str, raise_error=True, doc=None):
         '''
