@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8]
+        # add 3.9 once https://github.com/PyCQA/pylint/pull/3890 is fixed
 
     env:
       VIRTUAL_ENV: /usr
