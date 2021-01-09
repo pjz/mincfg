@@ -87,8 +87,8 @@ SIGN=
 
 .PHONY: git-release
 git-release: wheel .version not-dirty
-	@if [ `git rev-parse --abbrev-ref HEAD` != master ]; then \
-		echo "You can only do a release from the master branch.";\
+	@if [ `git rev-parse --abbrev-ref HEAD` != main ]; then \
+		echo "You can only do a release from the main branch.";\
 		exit 1;\
 	fi
 	@if git tag | grep -q `cat .version` ; then \
@@ -102,8 +102,8 @@ git-release: wheel .version not-dirty
 	git push --tags &&\
 	git checkout release &&\
 	git merge $$VER &&\
-	git push && git checkout master
-	@echo "Released! Note you're now on the 'master' branch."
+	git push && git checkout main
+	@echo "Released! Note you're now on the 'main' branch."
 
 .PHONY: pypi-release
 pypi-release: wheel
