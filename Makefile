@@ -14,7 +14,7 @@ default::
 	@echo "clean - remove all build artifacts"
 	@echo "veryclean - remove all build artifacts and nuke test containers"
 	@echo "git-release - tag a release and push it to github"
-
+	@echo "pypi-release - push a release to pypi"
 
 PYTEST_ARGS = $(PYTEST_EXTRA)
 
@@ -104,6 +104,12 @@ git-release: wheel .version not-dirty
 	git merge $$VER &&\
 	git push && git checkout master
 	@echo "Released! Note you're now on the 'master' branch."
+
+.PHONY: pypi-release
+pypi-release: wheel
+	python setup.py bdist_wheel upload
+	python setup.py sdist --formats=zip,gztar,bztar upload
+
 
 # contort a bit to get the version number
 .version: setup.py

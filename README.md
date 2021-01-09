@@ -25,3 +25,6 @@ Yes, much more could be done:
 Much inspiration - and the .get() signature - is taken from everett, but the
 implementation is all mine.
 
+### To install
+
+```pip install mincfg```
