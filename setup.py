@@ -1,3 +1,5 @@
+import itertools
+
 # bootstrap if we need to
 try:
         import setuptools  # noqa
@@ -20,6 +22,12 @@ classifiers = [ 'Development Status :: 5 - Production/Stable'
               , 'Programming Language :: Python :: Implementation :: CPython'
               ]
 
+extras = {
+    'yaml': ['pyyaml']
+}
+extras['all'] = list(itertools.chain.from_iterable(extras.values()))
+extras['dev'] = ['pytest', 'pytest-cov', 'pytest-pylint', 'pytest-mypy', 'wheel' ] + extras['all']
+
 setup(  author = 'Paul Jimenez'
       , author_email = 'pj@place.org'
       , classifiers = classifiers
@@ -27,12 +35,9 @@ setup(  author = 'Paul Jimenez'
       , name = 'mincfg'
       , url = 'http://github.com/pjz/mincfg'
       , packages = find_packages()
-      , version = '0.1'
+      , version = '0.2'
       , install_requires = [ ]
-      , extras_require = {
-          'yaml': ['pyyaml'],
-          'dev': ['pytest', 'pytest-cov', 'pytest-pylint', 'pytest-mypy', 'wheel', 'pyyaml' ],
-          }
+      , extras_require = extras
       , zip_safe = False
      )
 
