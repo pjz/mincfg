@@ -23,7 +23,8 @@ classifiers = [ 'Development Status :: 5 - Production/Stable'
               ]
 
 extras = {
-    'yaml': ['pyyaml']
+    'yaml': ['pyyaml'],
+    'ini': ['configobj'],
 }
 extras['all'] = list(itertools.chain.from_iterable(extras.values()))
 extras['dev'] = ['pytest', 'pytest-cov', 'pytest-pylint', 'pytest-mypy', 'wheel' ] + extras['all']

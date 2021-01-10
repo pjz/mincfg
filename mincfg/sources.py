@@ -13,6 +13,7 @@ __all__ = [
     'OSEnvironSource',
     'YamlFileSource',
     'SubsetSource',
+    'INIFileSource',
 ]
 
 #CfgDict = Dict[str, Union[str, 'CfgDict']]  # the correct, recursive type... unsupported by mypy
@@ -76,7 +77,7 @@ class YamlFileSource(ConfigSource):
         self.path = Path(filename)
 
     def as_dict(self) -> CfgDict:
-        # import yaml here so using the module won't fail if yaml isn't installed
+        # import yaml here so using the module won't fail if it isn't installed
         import yaml  # pylint: disable=import-outside-toplevel
         if not self.path.exists():
             return dict()
@@ -99,4 +100,19 @@ class SubsetSource(ConfigSource):
     def as_dict(self) -> CfgDict:
         full = self.source.as_dict()
         return { k: v for k, v in full.items() if k in self.keys }
+
+
+class INIFileSource(ConfigSource):
+    '''
+    An INI-file source of configuration information
+    '''
+    def __init__(self, filename: Union[Path, str]):
+        self.filename = str(filename)
+
+    def as_dict(self) -> CfgDict:
+        # import configobj here so using the module won't fail if it isn't installed
+        from configobj import ConfigObj  # pylint: disable=import-outside-toplevel
+        return ConfigObj(self.filename)
+
+
 

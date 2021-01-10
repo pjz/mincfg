@@ -1,7 +1,7 @@
 
 import os
 
-from mincfg import MergedConfiguration, DictSource, OSEnvironSource, SubsetSource, YamlFileSource
+from mincfg import MergedConfiguration, DictSource, OSEnvironSource, SubsetSource, YamlFileSource, INIFileSource
 
 
 
@@ -89,4 +89,22 @@ def test_yaml_file_source(tmp_path):
     assert config.get('b') == '2'
     assert config.get('ca', namespace=['c']) == '3'
     assert config.get('cb', namespace=['c']) == '4'
+
+
+def test_ini_file_source(tmp_path):
+
+    # make up a tempfile name
+    yamlfile = tmp_path / "config.ini"
+
+    # write test config to the temp file
+    yamlfile.write_text("a = 1\nb=2\n[c]\nca = 3\ncb = 4\n\n")
+
+    # point the config at it
+    config = MergedConfiguration([INIFileSource(str(yamlfile))])
+
+    assert config.get('a') == '1'
+    assert config.get('b') == '2'
+    assert config.get('ca', namespace=['c']) == '3'
+    assert config.get('cb', namespace=['c']) == '4'
+
 
