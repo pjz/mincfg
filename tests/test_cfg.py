@@ -1,9 +1,7 @@
 
 import os
 
-from mincfg import MergedConfiguration, DictSource, OSEnvironSource
-
-
+from mincfg import MergedConfiguration, DictSource, OSEnvironSource, SubsetSource, YamlFileSource
 
 
 
@@ -55,4 +53,40 @@ def test_osenviron_source():
     assert config.get('b') == 'b'
     assert config.get('a', namespace=['c']) == 'ca'
     assert config.get('b', namespace=['c']) == 'cb'
+
+
+def test_subset_source():
+
+    a = {'a': '1',
+         'b': '1',
+         'c': '1'
+        }
+    b = {'a': '2',
+         'b': '2',
+         'c': '2'
+        }
+    a_src = DictSource(a)
+    b_src = DictSource(b)
+    config = MergedConfiguration([a_src, b_src, SubsetSource(a_src, set('a'))])
+
+    assert config.get('a') == '1'
+    assert config.get('b') == '2'
+    assert config.get('c') == '2'
+
+
+def test_yaml_file_source(tmp_path):
+
+    # make up a tempfile name
+    yamlfile = tmp_path / "config.yaml"
+
+    # write test config to the temp file
+    yamlfile.write_text("a: 1\nb: 2\nc:\n  ca: 3\n  cb: 4\n\n")
+
+    # point the config at it
+    config = MergedConfiguration([YamlFileSource(str(yamlfile))])
+
+    assert config.get('a') == '1'
+    assert config.get('b') == '2'
+    assert config.get('ca', namespace=['c']) == '3'
+    assert config.get('cb', namespace=['c']) == '4'
 

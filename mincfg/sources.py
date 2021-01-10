@@ -2,7 +2,7 @@ import os
 import logging
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import Dict, Union, Any
+from typing import Dict, Union, Any, Set
 
 logger = logging.getLogger(__name__)
 
@@ -92,10 +92,11 @@ class SubsetSource(ConfigSource):
     precedence reasons. eg. source A's namespace  'A' should take priority over source B's namspace 'A', but source B's
     namespace 'B' should take priority over source A's namespace 'B'.
     '''
-    def __init__(self, source: ConfigSource, namespace: str):
+    def __init__(self, source: ConfigSource, keys: Set[str]):
         self.source = source
-        self.namespace = namespace
+        self.keys = set(keys)
 
     def as_dict(self) -> CfgDict:
-        return self.source.as_dict().get(self.namespace, {})
+        full = self.source.as_dict()
+        return { k: v for k, v in full.items() if k in self.keys }
 
