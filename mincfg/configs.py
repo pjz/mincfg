@@ -23,10 +23,10 @@ def _recursive_dict_update(main: Dict, update: Dict):
         lk = k.lower()
         if isinstance(v, dict):
             main[lk] = main.get(lk, dict())
-            logger.debug("rcd %r %s recursing into %r", id(main), lk, v)
+            logger.debug("dict %r %s recursing into dict %r to write %r", id(main), lk, id(main[lk]), v)
             _recursive_dict_update(main[lk], v)
         else:
-            logger.debug("rcd %r : %s -> %r", id(main), lk, v)
+            logger.debug("dict %r : %s -> %r", id(main), lk, v)
             main[lk] = v
 
 class MergedConfiguration:
