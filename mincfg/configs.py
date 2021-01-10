@@ -5,10 +5,14 @@ MergedConfiguration merges multiple sources linearly, with later sources taking 
 
 '''
 
+import logging
 from types import SimpleNamespace
 from typing import Dict, List, Optional
 
 from .sources import ConfigSource, CfgDict
+
+logger = logging.getLogger(__name__)
+
 
 def _recursive_dict_update(main: Dict, update: Dict):
     '''
@@ -17,9 +21,12 @@ def _recursive_dict_update(main: Dict, update: Dict):
     '''
     for k, v in update.items():
         lk = k.lower()
-        if isinstance(v, dict) and isinstance(main.get(lk), dict):
+        if isinstance(v, dict):
+            main[lk] = main.get(lk, dict())
+            logger.debug("rcd %r %s recursing into %r", id(main), lk, v)
             _recursive_dict_update(main[lk], v)
         else:
+            logger.debug("rcd %r : %s -> %r", id(main), lk, v)
             main[lk] = v
 
 class MergedConfiguration:
@@ -44,6 +51,7 @@ class MergedConfiguration:
             updates = source.as_dict()
             _recursive_dict_update(cfg, updates)
         self._cfg = cfg
+        self._loaded = True
 
     def as_dict(self) -> CfgDict:
         '''

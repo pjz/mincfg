@@ -1,8 +1,10 @@
 import os
+import logging
 from pathlib import Path
 from abc import ABC, abstractmethod
 from typing import Dict, Union, Any
 
+logger = logging.getLogger(__name__)
 
 __all__ = [ 
     'CfgDict',
@@ -58,6 +60,7 @@ class OSEnvironSource(ConfigSource):
             if not key_path:
                 continue
             *ns_list, key = key_path
+            logger.debug("OSEnvironSource: %s -> %r,%s ", env_key, ns_list, key)
             namespace = result
             for subns in ns_list:
                 namespace = namespace.setdefault(subns, dict())

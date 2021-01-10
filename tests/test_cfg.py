@@ -1,5 +1,7 @@
 
-from mincfg import MergedConfiguration, DictSource
+import os
+
+from mincfg import MergedConfiguration, DictSource, OSEnvironSource
 
 
 
@@ -33,4 +35,24 @@ def test_merged_case_insensitive():
 
     for k in ('a', 'b', 'd'):
         assert config.get(k.lower()) == config.get(k.upper())
+
+
+def test_osenviron_source():
+
+    cur_keys = set(os.environ.keys())
+    os.environ.update({
+        'MINCFGTST_A': 'a',
+        'MINCFGTST_B': 'b',
+        'MINCFGTST_C_A': 'ca',
+        'MINCFGTST_C_B': 'cb',
+    })
+
+    shell = os.environ.get('SHELL', 'no-shell-defined')
+    user = os.environ.get('USER', 'unknown user')
+
+    config = MergedConfiguration([OSEnvironSource('MINCFGTST')])
+    assert config.get('a') == 'a'
+    assert config.get('b') == 'b'
+    assert config.get('a', namespace=['c']) == 'ca'
+    assert config.get('b', namespace=['c']) == 'cb'
 
