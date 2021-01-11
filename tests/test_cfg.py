@@ -88,14 +88,18 @@ def test_subset_source():
 
 def test_yaml_file_source(tmp_path):
 
+    nonexistantsrc = YamlFileSource(None)
+
     # make up a tempfile name
     cfgfile = tmp_path / "config.yaml"
 
     # write test config to the temp file
     cfgfile.write_text("a: 1\nb: 2\nc:\n  ca: 3\n  cb: 4\n\n")
 
+    cfgfilesrc = YamlFileSource(str(cfgfile))
+
     # point the config at it
-    config = MergedConfiguration([YamlFileSource(str(cfgfile))])
+    config = MergedConfiguration([nonexistantsrc, cfgfilesrc])
 
     assert config.get('a') == '1'
     assert config.get('b') == '2'
@@ -105,14 +109,18 @@ def test_yaml_file_source(tmp_path):
 
 def test_ini_file_source(tmp_path):
 
+    nonexistantsrc = INIFileSource(None)
+
     # make up a tempfile name
     cfgfile = tmp_path / "config.ini"
 
     # write test config to the temp file
     cfgfile.write_text("a = 1\nb=2\n[c]\nca = 3\ncb = 4\n\n")
 
+    cfgfilesrc = INIFileSource(str(cfgfile))
+
     # point the config at it
-    config = MergedConfiguration([INIFileSource(str(cfgfile))])
+    config = MergedConfiguration([nonexistantsrc, cfgfilesrc])
 
     assert config.get('a') == '1'
     assert config.get('b') == '2'
@@ -122,14 +130,18 @@ def test_ini_file_source(tmp_path):
 
 def test_dotenv_file_source(tmp_path):
 
+    nonexistantsrc = DotEnvFileSource(None)
+
     # make up a tempfile name
     cfgfile = tmp_path / "config.env"
 
     # write test config to the temp file
     cfgfile.write_text("a=1\nb=2\nc_a=3\nc_b=4\n\n")
 
+    cfgfilesrc = DotEnvFileSource(str(cfgfile))
+
     # point the config at it
-    config = MergedConfiguration([DotEnvFileSource(str(cfgfile))])
+    config = MergedConfiguration([nonexistantsrc, cfgfilesrc])
 
     assert config.get('a') == '1'
     assert config.get('b') == '2'
