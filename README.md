@@ -7,8 +7,10 @@ A set of simple tools to build a configuration system with
 
 The first set are 'sources':
   - DictSource, which takes values from a python dict and is useful for defaults
+  - SubsetSource, which returns a subset of another source, to help with merge precedence
   - OSEnvironSource, which parses config values from os.environ into hierarchical dictionaries
   - YamlFileSource, which parses a yaml file into hierarchical dictionaires
+  - INIFileSource, which understands INI files (based on configobj) 
   
 The second tool is:
   - MergedConfiguration: which merges multiple configuration sources into a coherent whole
@@ -18,7 +20,7 @@ Yes, much more could be done:
   - value validation
   - default parsers
   - default default values (that .get() without a default would default to)
-  - more file types (json, ini, env, ... xml?)
+  - more file types (json, env, ... xml?)
 
 ... PRs accepted!
 
