@@ -44,6 +44,7 @@ class MergedConfiguration:
 
     def add_source(self, source: ConfigSource):
         self.sources.append(source)
+        self._loaded = False
 
     def load(self):
         '''
@@ -57,13 +58,19 @@ class MergedConfiguration:
         self._cfg = cfg
         self._loaded = True
 
-    def as_dict(self) -> CfgDict:
+    def as_dict(self, namespace: Optional[List[str]] = None) -> CfgDict:
         '''
-        return the entire configuration as a single dictionary
+        return the entire configuration (or a namesspace of it) as a single dictionary
         '''
         if not self._loaded:
             self.load()
-        return self._cfg
+        ns = [] if namespace is None else namespace
+        in_ns = self._cfg
+        for subns in ns:
+            in_ns = in_ns[subns]
+        if not isinstance(in_ns, dict):
+            raise ValueError(f"namespace {'.'.join(ns)} points to a key, not a dict")
+        return in_ns
 
     def get(self, key: str, namespace: Optional[List[str]]=None, default=None, parser=str, raise_error=True, doc=None):
         '''
@@ -91,10 +98,5 @@ class MergedConfiguration:
         '''
         return the config, or a namespace within it, as a SimpleNamespace
         '''
-        in_ns = self.as_dict()
-        for subns in namespace:
-            in_ns = in_ns[subns]
-        if not isinstance(in_ns, dict):
-            raise ValueError("Need a sub-namespace (dict) to make a namespace")
-        return SimpleNamespace(**in_ns)
+        return SimpleNamespace(**self.as_dict(namespace))
 

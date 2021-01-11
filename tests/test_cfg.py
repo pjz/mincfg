@@ -5,28 +5,29 @@ from mincfg import MergedConfiguration
 from mincfg import DictSource, OSEnvironSource, SubsetSource, YamlFileSource, INIFileSource, DotEnvFileSource
 
 
-
-def test_merged_case_insensitive():
-
-    d1 = {
+D1 = DictSource({
         'a': '11', 
         'B': '12',
         'C': { 
             'Ca': '131', 
             'CB': '132'
         }
-    }
+    })
 
-    d2 = {
+D2 = DictSource({
         'A': '21',
         'c': {
             'ca': '231',
             'cc': '233'
         },
         'd': '24',
-    }
+    })
 
-    config = MergedConfiguration([DictSource(d1), DictSource(d2)])
+
+
+def test_merged_case_insensitive():
+
+    config = MergedConfiguration([D1, D2])
 
     assert config.get('a') == '21'
     assert config.get('b') == '12'
@@ -34,6 +35,16 @@ def test_merged_case_insensitive():
 
     for k in ('a', 'b', 'd'):
         assert config.get(k.lower()) == config.get(k.upper())
+
+
+def test_as_dict_ns():
+
+    config = MergedConfiguration([D1])
+
+    c = config.as_dict('c')
+    assert c['ca'] == '131'
+    assert c['cb'] == '132'
+
 
 
 def test_osenviron_source():
