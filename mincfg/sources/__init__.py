@@ -17,6 +17,7 @@ __all__ = [
     'YamlFileSource',
     'SubsetSource',
     'INIFileSource',
+    'DotEnvFileSource',
 ]
 
 try:
@@ -29,3 +30,7 @@ try:
 except ImportError:
     INIFileSource = ErrSrc("Using INIFileSource requries mincfg[ini] or mincfg[all] be installed")  # type: ignore
 
+try:
+    from .dotenv import DotEnvFileSource
+except ImportError:
+    DotEnvFileSource = ErrSrc("Using DotEnvFileSource requires mincfg[env] or mincfg[all] be installed")  # type: ignore

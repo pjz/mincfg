@@ -29,6 +29,7 @@ def _recursive_dict_update(main: Dict, update: Dict):
             logger.debug("dict %r : %s -> %r", id(main), lk, v)
             main[lk] = v
 
+
 class MergedConfiguration:
     '''
     Merges configuration sources, with later overriding earlier
@@ -37,6 +38,9 @@ class MergedConfiguration:
         self.sources: List[ConfigSource] = [] if sources is None else sources
         self._cfg: CfgDict = dict()
         self._loaded: bool = False
+
+    def __repr__(self):
+        return 'MergedConfiguration([' + ', '.join(repr(s) for s in self.sources) + ')'
 
     def add_source(self, source: ConfigSource):
         self.sources.append(source)

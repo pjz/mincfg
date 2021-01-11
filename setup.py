@@ -25,6 +25,7 @@ classifiers = [ 'Development Status :: 5 - Production/Stable'
 extras = {
     'yaml': ['pyyaml'],
     'ini': ['configobj'],
+    'env': ['python-dotenv'],
 }
 extras['all'] = list(itertools.chain.from_iterable(extras.values()))
 extras['dev'] = ['pytest', 'pytest-cov', 'pytest-pylint', 'pytest-mypy', 'wheel' ] + extras['all']
@@ -36,7 +37,7 @@ setup(  author = 'Paul Jimenez'
       , name = 'mincfg'
       , url = 'http://github.com/pjz/mincfg'
       , packages = find_packages()
-      , version = '0.2'
+      , version = '0.3'
       , install_requires = [ ]
       , extras_require = extras
       , zip_safe = False

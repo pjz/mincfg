@@ -1,7 +1,8 @@
 
 import os
 
-from mincfg import MergedConfiguration, DictSource, OSEnvironSource, SubsetSource, YamlFileSource, INIFileSource
+from mincfg import MergedConfiguration
+from mincfg import DictSource, OSEnvironSource, SubsetSource, YamlFileSource, INIFileSource, DotEnvFileSource
 
 
 
@@ -77,13 +78,13 @@ def test_subset_source():
 def test_yaml_file_source(tmp_path):
 
     # make up a tempfile name
-    yamlfile = tmp_path / "config.yaml"
+    cfgfile = tmp_path / "config.yaml"
 
     # write test config to the temp file
-    yamlfile.write_text("a: 1\nb: 2\nc:\n  ca: 3\n  cb: 4\n\n")
+    cfgfile.write_text("a: 1\nb: 2\nc:\n  ca: 3\n  cb: 4\n\n")
 
     # point the config at it
-    config = MergedConfiguration([YamlFileSource(str(yamlfile))])
+    config = MergedConfiguration([YamlFileSource(str(cfgfile))])
 
     assert config.get('a') == '1'
     assert config.get('b') == '2'
@@ -94,17 +95,35 @@ def test_yaml_file_source(tmp_path):
 def test_ini_file_source(tmp_path):
 
     # make up a tempfile name
-    yamlfile = tmp_path / "config.ini"
+    cfgfile = tmp_path / "config.ini"
 
     # write test config to the temp file
-    yamlfile.write_text("a = 1\nb=2\n[c]\nca = 3\ncb = 4\n\n")
+    cfgfile.write_text("a = 1\nb=2\n[c]\nca = 3\ncb = 4\n\n")
 
     # point the config at it
-    config = MergedConfiguration([INIFileSource(str(yamlfile))])
+    config = MergedConfiguration([INIFileSource(str(cfgfile))])
 
     assert config.get('a') == '1'
     assert config.get('b') == '2'
     assert config.get('ca', namespace=['c']) == '3'
     assert config.get('cb', namespace=['c']) == '4'
+
+
+def test_dotenv_file_source(tmp_path):
+
+    # make up a tempfile name
+    cfgfile = tmp_path / "config.env"
+
+    # write test config to the temp file
+    cfgfile.write_text("a=1\nb=2\nc_a=3\nc_b=4\n\n")
+
+    # point the config at it
+    config = MergedConfiguration([DotEnvFileSource(str(cfgfile))])
+
+    assert config.get('a') == '1'
+    assert config.get('b') == '2'
+    assert config.get('a', namespace=['c']) == '3'
+    assert config.get('b', namespace=['c']) == '4'
+
 
 
