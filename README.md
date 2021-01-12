@@ -1,4 +1,7 @@
 # MinCfg
+
+![Tests/Pylint/Mypy](https://github.com/pjz/mincfg/workflows/Python%20tests/badge.svg)
+
 ## the Minimum Configuration Handling System
 
 There are many configuration management/definition systems.  This one is mine.
@@ -9,8 +12,9 @@ The first set are 'sources':
   - DictSource, which takes values from a python dict and is useful for defaults
   - SubsetSource, which returns a subset of another source, to help with merge precedence
   - OSEnvironSource, which parses config values from os.environ into hierarchical dictionaries
-  - YamlFileSource, which parses a yaml file into hierarchical dictionaires
-  - INIFileSource, which understands INI files (based on configobj) 
+  - YamlFileSource, which parses a yaml file into hierarchical dictionaires (`pip install mincfg[yaml]` for support) 
+  - INIFileSource, which understands INI files (based on configobj) (`pip install mincfg[ini]` for support)
+  - DotEnvSouce, which understands .env files (based on python-dotenv) (`pip install mincfg[env]` for support)
   
 The second tool is:
   - MergedConfiguration: which merges multiple configuration sources into a coherent whole
@@ -20,7 +24,8 @@ Yes, much more could be done:
   - value validation
   - default parsers
   - default default values (that .get() without a default would default to)
-  - more file types (json, env, ... xml?)
+  - more file types (json, ... xml?)
+  - sphinx/rtd docs
 
 ... PRs accepted!
 
