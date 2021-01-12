@@ -36,15 +36,14 @@ class MergedConfiguration:
     """
     def __init__(self, sources: Optional[List[ConfigSource]] = None):
         self.sources: List[ConfigSource] = [] if sources is None else sources
-        self._cfg: CfgDict = dict()
-        self._loaded: bool = False
+        self._cfg: Optional[CfgDict] = None
 
     def __repr__(self):
         return 'MergedConfiguration([' + ', '.join(repr(s) for s in self.sources) + ')'
 
     def add_source(self, source: ConfigSource):
         self.sources.append(source)
-        self._loaded = False
+        self._cfg = None
 
     def load(self):
         """
@@ -56,19 +55,18 @@ class MergedConfiguration:
             updates = source.as_dict()
             _recursive_dict_update(cfg, updates)
         self._cfg = cfg
-        self._loaded = True
 
     def as_dict(self, namespace: Optional[List[str]] = None) -> CfgDict:
         """
         return the entire configuration (or a namesspace of it) as a single dictionary
         """
-        if not self._loaded:
+        if self._cfg is None:
             self.load()
         ns = [] if namespace is None else namespace
+        assert self._cfg is not None
         in_ns = self._cfg
-        assert in_ns is not None
         for subns in ns:
-            in_ns = in_ns[subns]
+            in_ns = in_ns.setdefault(subns, dict())
         if not isinstance(in_ns, dict):
             raise ValueError(f"namespace {'.'.join(ns)} points to a key, not a dict")
         return in_ns
