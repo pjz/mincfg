@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from typing import Union
 
@@ -6,10 +5,12 @@ from .abstract import ConfigSource, CfgDict
 
 import yaml
 
+
 class YamlFileSource(ConfigSource):
-    '''
+    """
     A YAML file source of configuration information
-    '''
+    """
+
     def __init__(self, filename: Union[Path, str]):
         self.path = Path(filename) if filename else None
 
@@ -22,4 +23,3 @@ class YamlFileSource(ConfigSource):
             return dict()
         with self.path.open() as f:
             return yaml.safe_load(f)
-

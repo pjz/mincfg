@@ -1,12 +1,6 @@
-import os
-import logging
-from pathlib import Path
-from abc import ABC, abstractmethod
-from typing import Dict, Union, Any, Set
-
-from .errsrc import ErrorMessagingSource as ErrSrc
 from .abstract import CfgDict, ConfigSource
 from .builtin import DictSource, OSEnvironSource
+from .errsrc import ErrorMessagingSource as ErrSrc
 from .meta import SubsetSource
 
 __all__ = [ 
