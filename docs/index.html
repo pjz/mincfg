@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MinCfg: The Minimal Config System &#8212; MinCfg 0.6 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MergedConfiguration" href="configs.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="mincfg-the-minimal-config-system">
+<h1>MinCfg: The Minimal Config System<a class="headerlink" href="#mincfg-the-minimal-config-system" title="Permalink to this headline">¶</a></h1>
+<p>Release v0.6.</p>
+<hr class="docutils" />
+<p><em>Handling simple things simply…</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mincfg</span> <span class="kn">import</span> <span class="n">MergedConfiguration</span><span class="p">,</span> <span class="n">YamlFileSource</span>
+
+<span class="n">mycfg</span> <span class="o">=</span> <span class="n">MergedConfiguration</span><span class="p">([</span><span class="n">YamlFileSource</span><span class="p">(</span><span class="s1">&#39;/etc/myapp.yaml&#39;</span><span class="p">),</span> <span class="n">YamlFileSource</span><span class="p">(</span><span class="s1">&#39;~/.myapp.yaml&#39;</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p><em>and more complicated things reasonably…</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mincfg</span> <span class="kn">import</span> <span class="n">MergedConfiguration</span><span class="p">,</span> <span class="n">YamlFileSource</span><span class="p">,</span> <span class="n">OSEnvironSource</span><span class="p">,</span> <span class="n">DictSource</span>
+
+<span class="n">defaults</span> <span class="o">=</span> <span class="n">DictSource</span><span class="p">({</span><span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://example.com&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;testuser&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;pass&#39;</span><span class="p">:</span> <span class="s1">&#39;testpassword&#39;</span> <span class="p">})</span>
+
+<span class="n">mycfg</span> <span class="o">=</span> <span class="n">MergedConfiguration</span><span class="p">([</span><span class="n">defaults</span><span class="p">,</span>
+                             <span class="n">YamlFileSource</span><span class="p">(</span><span class="s1">&#39;/etc/myapp.yaml&#39;</span><span class="p">),</span>
+                             <span class="n">YamlFileSource</span><span class="p">(</span><span class="s1">&#39;~/.myapp.yaml&#39;</span><span class="p">),</span>
+                             <span class="n">YamlFileSource</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MYAPPCFG&#39;</span><span class="p">)),</span>
+                             <span class="n">OSEnvironSource</span><span class="p">(</span><span class="s1">&#39;MYAPP_&#39;</span><span class="p">)</span>
+                            <span class="p">])</span>
+</pre></div>
+</div>
+<p>The main caveat is that all config keys are case-insensitive (lower case).</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configs.html">MergedConfiguration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">Sources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#builtin-sources">Builtin Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#addon-sources">AddOn Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#abstract-sources">Abstract Sources</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">MinCfg</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configs.html">MergedConfiguration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">Sources</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="configs.html" title="next chapter">MergedConfiguration</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Paul Jimenez.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

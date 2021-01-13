@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MergedConfiguration &#8212; MinCfg 0.6 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sources" href="sources.html" />
+    <link rel="prev" title="MinCfg: The Minimal Config System" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="mergedconfiguration">
+<h1>MergedConfiguration<a class="headerlink" href="#mergedconfiguration" title="Permalink to this headline">¶</a></h1>
+<p>Currently the only way to put together <a class="reference internal" href="sources.html"><span class="doc">Sources</span></a>, so every configuration is a MergedConfiguration.</p>
+<dl class="py class">
+<dt id="mincfg.MergedConfiguration">
+<em class="property">class </em><code class="sig-prename descclassname">mincfg.</code><code class="sig-name descname">MergedConfiguration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sources</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>mincfg.sources.abstract.ConfigSource<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/configs.html#MergedConfiguration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mincfg.MergedConfiguration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges configuration sources</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sources</strong> – a list of :ref:ConfigSource objects to merge, with later ones overriding earlier ones</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="mincfg.MergedConfiguration.as_dict">
+<code class="sig-name descname">as_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span><a class="reference internal" href="_modules/mincfg/configs.html#MergedConfiguration.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mincfg.MergedConfiguration.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the configuration, or a namespace within it, as a single dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>namespace</strong> – the namespace to return as a dict.  If unspecified, return the entire config.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mincfg.MergedConfiguration.as_ns">
+<code class="sig-name descname">as_ns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; types.SimpleNamespace<a class="reference internal" href="_modules/mincfg/configs.html#MergedConfiguration.as_ns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mincfg.MergedConfiguration.as_ns" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the config, or a namespace within it, as a SimpleNamespace</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>namespace</strong> – the namespace to return as a SimpleNamespace.  If unspecified, return the entire config.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mincfg.MergedConfiguration.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">key: str</em>, <em class="sig-param">namespace: Optional[List[str]] = None</em>, <em class="sig-param">default=None</em>, <em class="sig-param">parser=&lt;class 'str'&gt;</em>, <em class="sig-param">raise_error=True</em>, <em class="sig-param">doc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/configs.html#MergedConfiguration.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mincfg.MergedConfiguration.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>get a single config key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace</strong> – the ‘path’ in the config to the namespace to look the key up in</p></li>
+<li><p><strong>default</strong> – is the value to use if the key is not found</p></li>
+<li><p><strong>parser</strong> – is how to cast the result</p></li>
+<li><p><strong>raise_error</strong> – is whether to raise an error if the key is not found (note: supplying a default negates
+raise_error, as a (presumably) valid value is always available)</p></li>
+<li><p><strong>doc</strong> – is extra information to supply with the error message</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mincfg.MergedConfiguration.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/configs.html#MergedConfiguration.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mincfg.MergedConfiguration.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cause the config to be loaded; note that this need not be called directly, as it is lazily loaded.
+Subsequent calls _will_ re-load from the config sources.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MinCfg</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MergedConfiguration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">Sources</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">MinCfg: The Minimal Config System</a></li>
+      <li>Next: <a href="sources.html" title="next chapter">Sources</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Paul Jimenez.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/configs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
