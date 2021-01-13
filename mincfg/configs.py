@@ -18,6 +18,7 @@ def _recursive_dict_update(main: Dict, update: Dict):
     """
     like dict.update(), modifies the 'main' by applying 'update'
     UNLIKE dict.update(), normalizes all keys to lowercase
+    :meta private:
     """
     for k, v in update.items():
         lk = k.lower()
@@ -32,7 +33,9 @@ def _recursive_dict_update(main: Dict, update: Dict):
 
 class MergedConfiguration:
     """
-    Merges configuration sources, with later overriding earlier
+    Merges configuration sources
+
+    :param sources: a list of :ref:ConfigSource objects to merge, with later ones overriding earlier ones
     """
     def __init__(self, sources: Optional[List[ConfigSource]] = None):
         self.sources: List[ConfigSource] = [] if sources is None else sources
@@ -47,7 +50,7 @@ class MergedConfiguration:
 
     def load(self):
         """
-        cause the config to be loaded; note that this need not be called directly, as it is lazily loaded.
+        Cause the config to be loaded; note that this need not be called directly, as it is lazily loaded.
         Subsequent calls _will_ re-load from the config sources.
         """
         cfg: CfgDict = dict()
@@ -58,7 +61,9 @@ class MergedConfiguration:
 
     def as_dict(self, namespace: Optional[List[str]] = None) -> CfgDict:
         """
-        return the entire configuration (or a namesspace of it) as a single dictionary
+        return the configuration, or a namespace within it, as a single dictionary
+
+        :param namespace: the namespace to return as a dict.  If unspecified, return the entire config.
         """
         if self._cfg is None:
             self.load()
@@ -74,12 +79,13 @@ class MergedConfiguration:
     def get(self, key: str, namespace: Optional[List[str]]=None, default=None, parser=str, raise_error=True, doc=None):
         """
         get a single config key
-        a namespace is the 'path' in the config to the namespace to look the key up in
-        default is the value to use if the key is not found
-        parser is how to cast the result
-        raise_error is whether to raise an error if the key is not found (note: supplying a default negates
+
+        :param namespace: the 'path' in the config to the namespace to look the key up in
+        :param default: is the value to use if the key is not found
+        :param parser: is how to cast the result
+        :param raise_error: is whether to raise an error if the key is not found (note: supplying a default negates
             raise_error, as a (presumably) valid value is always available)
-        doc is extra information to supply with the error message
+        :param doc: is extra information to supply with the error message
         """
         k = key.lower()
         ns = namespace or []
@@ -96,5 +102,7 @@ class MergedConfiguration:
     def as_ns(self, namespace: List[str]) -> SimpleNamespace:
         """
         return the config, or a namespace within it, as a SimpleNamespace
+
+        :param namespace: the namespace to return as a SimpleNamespace.  If unspecified, return the entire config.
         """
         return SimpleNamespace(**self.as_dict(namespace))

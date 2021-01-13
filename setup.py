@@ -28,7 +28,8 @@ extras = {
     'env': ['python-dotenv'],
 }
 extras['all'] = list(itertools.chain.from_iterable(extras.values()))
-extras['dev'] = ['pytest', 'pytest-cov', 'pytest-pylint', 'pytest-mypy', 'wheel', 'sphinx' ] + extras['all']
+doc_build_deps = [ 'sphinx', 'furo' ]
+extras['dev'] = ['pytest', 'pytest-cov', 'pytest-pylint', 'pytest-mypy', 'wheel' ] + extras['all'] + doc_build_deps
 
 setup(  author = 'Paul Jimenez'
       , author_email = 'pj@place.org'

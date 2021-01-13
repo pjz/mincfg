@@ -7,12 +7,11 @@ PROJ=$(shell python setup.py --name)
 default::
 	@echo "dev - set up the dev virtualenv"
 	@echo "wheel|$(PROJ) - build the $(PROJ) python package"
-	@echo "update-deps - rebuild package requirements"
+	@echo "docs - build the docs into docs/_build"
 	@echo "pylint - run a linter on the codebase"
 	@echo "mypy - run a typechecker on the codebase"
 	@echo "test = run all tests in dev machine python"
 	@echo "clean - remove all build artifacts"
-	@echo "veryclean - remove all build artifacts and nuke test containers"
 	@echo "git-release - tag a release and push it to github"
 	@echo "pypi-release - push a release to pypi"
 
@@ -114,6 +113,10 @@ pypi-release: wheel
 # contort a bit to get the version number
 .version: setup.py
 	python setup.py --version >$@
+
+.PHONY: docs
+docs:
+	$(MAKE) -C docs html
 
 .PHONY: clean
 clean:

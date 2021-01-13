@@ -17,13 +17,15 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'mincfg'
+project = 'MinCfg'
 copyright = '2021, Paul Jimenez'
 author = 'Paul Jimenez'
 
-# The full version, including alpha/beta/rc tags
-release = '0.6'
+with open('../.version') as f:
+    version = f.readline().strip()
 
+# The full version, including alpha/beta/rc tags
+release = version
 
 # -- General configuration ---------------------------------------------------
 
@@ -31,6 +33,8 @@ release = '0.6'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
