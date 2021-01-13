@@ -14,6 +14,7 @@ default::
 	@echo "clean - remove all build artifacts"
 	@echo "git-release - tag a release and push it to github"
 	@echo "pypi-release - push a release to pypi"
+	@echo "docs-release - build the docs and release to github pages"
 
 PYTEST_ARGS = $(PYTEST_EXTRA)
 
@@ -115,8 +116,31 @@ pypi-release: wheel
 	python setup.py --version >$@
 
 .PHONY: docs
-docs:
+docs: .version
 	$(MAKE) -C docs html
+
+docs-release: docs
+	@if [ `git rev-parse --abbrev-ref HEAD` != main ]; then \
+		echo "You can only do a release from the main branch.";\
+		exit 1;\
+	fi
+	@VER=`cat .version` &&\
+	DOCTAR=docs-$$VER.tgz &&\
+	cd docs/_build &&\
+	tar czf ../../$$DOCTAR html &&\
+	cd ../.. &&\
+	git checkout gh-pages &&\
+	rm -rf docs &&\
+	tar xzf $$DOCTAR &&\
+	rm $$DOCTAR &&\
+	mv html docs &&\
+	touch docs/.nojekyll &&\
+	git add -A docs &&\
+	git commit -m "release docs $$VER" &&\
+	git push && git checkout main
+	@echo "Docs released!"
+
+
 
 .PHONY: clean
 clean:
