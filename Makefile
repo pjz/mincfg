@@ -115,8 +115,25 @@ pypi-release: wheel
 	python setup.py --version >$@
 
 .PHONY: docs
-docs:
+docs: .version
 	$(MAKE) -C docs html
+
+docs-release: docs
+	@if [ `git rev-parse --abbrev-ref HEAD` != main ]; then \
+		echo "You can only do a release from the main branch.";\
+		exit 1;\
+	fi
+	@VER=`cat .version` &&\
+	tar czf docs-$$VER.tgz docs/_build/html &&\
+	git checkout gh-pages &&\
+	rm -rf docs/_build/html &&\
+	tar xzf docs-$$VER.tgz &&\
+	git add -A docs/_build/html &&\
+	git commit -m "release docs $$VER" &&\
+	git push && git checkout main
+	@echo "Docs released!"
+
+
 
 .PHONY: clean
 clean:
