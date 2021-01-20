@@ -8,9 +8,9 @@ import yaml
 
 class YamlFileSource(ConfigSource):
     """
-    A YAML file source of configuration information
+    A YAML file source of configuration information.
+    Note that if the top level of the yaml file is not a dict, it will be set as the value of an empty key.
     """
-
     def __init__(self, filename: Union[Path, str]):
         self.path = Path(filename) if filename else None
 
@@ -22,4 +22,7 @@ class YamlFileSource(ConfigSource):
         if not self.path.is_file():
             return dict()
         with self.path.open() as f:
-            return yaml.safe_load(f)
+            val = yaml.safe_load(f)
+        if not isinstance(val, dict):
+            val = { '': val }
+        return val
