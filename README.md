@@ -1,6 +1,6 @@
 # MinCfg
 
-![Tests/Pylint/Mypy](https://github.com/pjz/mincfg/workflows/Python%20tests/badge.svg)
+![Tests/Pylint/Mypy](https://github.com/pjz/mincfg/actions/workflows/python-test.yml/badge.svg)
 
 ## the Minimum Configuration Handling System
 
