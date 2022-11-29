@@ -15,8 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
-        # add 3.9 once https://github.com/PyCQA/pylint/pull/3890 is fixed
+        python-version: [3.7, 3.8, 3.9, 3.10]
 
     env:
       VIRTUAL_ENV: /usr
@@ -24,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
