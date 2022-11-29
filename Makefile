@@ -68,7 +68,9 @@ testf: test
 
 .PHONY: mypy
 mypy:
-	pytest --mypy -m mypy $(PROJ)
+	mypy --non-interactive --install-types $(PROJ)
+	#pytest --mypy -m mypy $(PROJ)
+	mypy --check-untyped-defs $(PROJ)
 
 .PHONY: coverage
 coverage:
