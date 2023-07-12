@@ -7,6 +7,7 @@ MergedConfiguration merges multiple sources linearly, with later sources taking 
 
 import logging
 from types import SimpleNamespace
+from configparser import ConfigParser
 from typing import Dict, List, Optional
 
 from .sources import ConfigSource, CfgDict
@@ -99,10 +100,26 @@ class MergedConfiguration:
             raise KeyError(msg)
         return parser(in_ns.get(k, default))
 
-    def as_ns(self, namespace: List[str]) -> SimpleNamespace:
+    def as_ns(self, namespace: Optional[List[str]] = None) -> SimpleNamespace:
         """
         return the config, or a namespace within it, as a SimpleNamespace
 
         :param namespace: the namespace to return as a SimpleNamespace.  If unspecified, return the entire config.
         """
         return SimpleNamespace(**self.as_dict(namespace))
+
+    def as_configparser(self, namespace: Optional[List[str]]=None) -> ConfigParser:
+        """
+        return the config, or a namespace within it, as a ConfigParser
+
+        :param namespace: the namespace to return as a ConfigParser.  If unspecified, return the entire config.
+        """
+        result = ConfigParser()
+        for k, v in self.as_dict(namespace).items():
+            if isinstance(v, dict):
+                result.add_section(k)
+                for kk, vv in v.items():
+                    result.set(k, kk, vv)
+            else:
+                result.set(result.default_section, k, v)
+        return result

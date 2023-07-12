@@ -37,14 +37,43 @@ def test_merged_case_insensitive():
         assert config.get(k.lower()) == config.get(k.upper())
 
 
-def test_as_dict_ns():
+def test_as_dict():
 
     config = MergedConfiguration([D1])
+
+    c = config.as_dict()
+    assert c['c']['ca'] == '131'
+    assert c['c']['cb'] == '132'
 
     c = config.as_dict('c')
     assert c['ca'] == '131'
     assert c['cb'] == '132'
 
+
+def test_as_ns():
+
+    config = MergedConfiguration([D1])
+
+    c = config.as_ns()
+    assert c.a == '11'
+    assert c.b == '12'
+    # TODO: make .as_ns() work recursively
+    # assert c.c.ca == '131'
+    # assert c.c.cb == '132'
+
+    c = config.as_ns('c')
+    assert c.ca == '131'
+    assert c.cb == '132'
+
+
+def test_as_configparser():
+
+    config = MergedConfiguration([D1])
+
+    c = config.as_configparser()
+    assert c['c']['ca'] == '131'
+    assert c['c']['cb'] == '132'
+    assert 'c' in c.sections()
 
 
 def test_osenviron_source():
