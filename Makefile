@@ -36,7 +36,7 @@ $(DEV_ENV): setup.py
 dev: $(DEV_ENV)
 
 wheel:
-	python setup.py bdist_wheel
+	python -m build
 
 raw-mypy raw-pylint raw-test raw-coverage: export PYTHONWARNINGS=ignore,default:::$(PROJ)
 
@@ -109,8 +109,8 @@ git-release: wheel .version not-dirty
 
 .PHONY: pypi-release
 pypi-release: wheel
-	python setup.py bdist_wheel upload
-	python setup.py sdist --formats=zip,gztar,bztar upload
+	python -m build
+	twine upload
 
 
 # contort a bit to get the version number
