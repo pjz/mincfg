@@ -1,7 +1,7 @@
 
 # This Makefile assumes it's being run someplace with pip available
 
-PROJ=$(shell python setup.py --name)
+PROJ=$(shell grep ^name pyproject.toml | cut -d\" -f2)
 
 .PHONY: default
 default::
@@ -18,19 +18,22 @@ default::
 
 PYTEST_ARGS = $(PYTEST_EXTRA)
 
-DEVREQS=setup.py
-REQS=setup.py
-DEV_ENV=.dev_env.stamp
+DEV_REQS=dev-requirements.txt
+DEV_ENV=$(VIRTUAL_ENV)/bin/pytest
 
 PIP_VENDORED_FLAGS=$(if $(PIP_VENDORED_DIR),-f $(PIP_VENDORED_DIR),)
 
-$(DEV_ENV): setup.py
+$(DEV_ENV): pyproject.toml
 	@if [ -z "$$VIRTUAL_ENV" ] ; then \
 	    echo "You should be in a virtualenv or other isolated environment before running this."; \
 		exit 1; \
 	fi
-	pip install -e .[dev]
-	touch $(DEV_ENV)
+	pip install pip-tools
+	pip-sync $(DEV_REQS)
+	pip install -e .[all]
+
+$(DEV_REQS): pyproject.toml
+	pip-compile -q --resolver=backtracking --extra=dev,all --output-file=$@ $<
 
 .PHONY: dev
 dev: $(DEV_ENV)
