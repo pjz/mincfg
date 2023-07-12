@@ -2,6 +2,7 @@
 # This Makefile assumes it's being run someplace with pip available
 
 PROJ=$(shell grep ^name pyproject.toml | cut -d\" -f2)
+VERSION=$(shell grep ^version pyproject.toml | cut -d\" -f2)
 
 .PHONY: default
 default::
@@ -91,37 +92,31 @@ not-dirty:
 SIGN=
 
 .PHONY: git-release
-git-release: wheel .version not-dirty
+git-release: wheel not-dirty
 	@if [ `git rev-parse --abbrev-ref HEAD` != main ]; then \
 		echo "You can only do a release from the main branch.";\
 		exit 1;\
 	fi
-	@if git tag | grep -q `cat .version` ; then \
+	@if git tag | grep -q ^$(VERSION) ; then \
 	        echo "Already released this version.";\
 	        echo "Update the version number and try again.";\
 	        exit 1;\
 	fi
-	VER=`cat .version` &&\
 	git push &&\
-	git tag $(SIGN) $$VER -m "Release v$$VER" &&\
+	git tag $(SIGN) $(VERSION) -m "Release v$(VERSION)" &&\
 	git push --tags &&\
 	git checkout release &&\
-	git merge $$VER &&\
+	git merge $(VERSION) &&\
 	git push && git checkout main
 	@echo "Released! Note you're now on the 'main' branch."
 
 .PHONY: pypi-release
 pypi-release: wheel
 	python -m build
-	twine upload
-
-
-# contort a bit to get the version number
-.version: setup.py
-	python setup.py --version >$@
+	twine upload dist/$(PROJ)-$(VERSION)*
 
 .PHONY: docs
-docs: .version
+docs:
 	$(MAKE) -C docs html
 
 docs-release: docs
@@ -129,8 +124,7 @@ docs-release: docs
 		echo "You can only do a release from the main branch.";\
 		exit 1;\
 	fi
-	@VER=`cat .version` &&\
-	DOCTAR=docs-$$VER.tgz &&\
+	@DOCTAR=docs-$(VERSION).tgz &&\
 	cd docs/_build &&\
 	tar czf ../../$$DOCTAR html &&\
 	cd ../.. &&\
@@ -141,7 +135,7 @@ docs-release: docs
 	mv html docs &&\
 	touch docs/.nojekyll &&\
 	git add -A docs &&\
-	git commit -m "release docs $$VER" &&\
+	git commit -m "release docs $(VERSION)" &&\
 	git push && git checkout main
 	@echo "Docs released!"
 
@@ -149,7 +143,7 @@ docs-release: docs
 
 .PHONY: clean
 clean:
-	rm -rf build dist *.egg-info shippable .version *.whl $(DEV_ENV)
+	rm -rf build dist *.egg-info shippable *.whl $(DEV_ENV)
 	find . -name __pycache__ | xargs rm -rf
 	find . -name \*.pyc | xargs rm -f
 

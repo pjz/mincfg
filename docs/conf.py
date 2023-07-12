@@ -14,15 +14,17 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'MinCfg'
 copyright = '2021, Paul Jimenez'
 author = 'Paul Jimenez'
 
-with open('../.version') as f:
-    version = f.readline().strip()
+with open('../pyproject.toml') as f:
+    for line in f.readlines():
+        if line.startswith('version'):
+            version = line.split('"')[1]
+            break
 
 # The full version, including alpha/beta/rc tags
 release = version
