@@ -5,6 +5,7 @@
 ## the Minimum Configuration Handling System
 
 There are many configuration management/definition systems.  This one is mine.
+This is an overview.  There are also more formal [docs](https://pjz.github.io/mincfg/).
 
 A set of simple tools to build a configuration system with
 
