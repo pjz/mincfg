@@ -1,18 +1,14 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Sources &#8212; MinCfg 0.8 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -60,12 +56,12 @@ want to support more than one source.</p>
 <section id="env-files">
 <h3>.env files<a class="headerlink" href="#env-files" title="Permalink to this heading">¶</a></h3>
 <p>Using <a class="reference external" href="https://pyyaml.org/wiki/PyYAMLDocumentation">PyYaml</a></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install mincfg<span class="o">[</span>env<span class="o">]</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mincfg<span class="o">[</span>env<span class="o">]</span>
 </pre></div>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="mincfg.DotEnvFileSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mincfg.</span></span><span class="sig-name descname"><span class="pre">DotEnvFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/sources/dotenv.html#DotEnvFileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mincfg.DotEnvFileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mincfg.</span></span><span class="sig-name descname"><span class="pre">DotEnvFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/sources/dotenv.html#DotEnvFileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mincfg.DotEnvFileSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>A .env-file source of configuration information</p>
 </dd></dl>
 
@@ -73,12 +69,12 @@ want to support more than one source.</p>
 <section id="ini-files">
 <h3>.ini files<a class="headerlink" href="#ini-files" title="Permalink to this heading">¶</a></h3>
 <p>Using <a class="reference external" href="https://configobj.readthedocs.io/en/latest/configobj.html">configobj</a></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install mincfg<span class="o">[</span>ini<span class="o">]</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mincfg<span class="o">[</span>ini<span class="o">]</span>
 </pre></div>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="mincfg.INIFileSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mincfg.</span></span><span class="sig-name descname"><span class="pre">INIFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/sources/inifilesrc.html#INIFileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mincfg.INIFileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mincfg.</span></span><span class="sig-name descname"><span class="pre">INIFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/sources/inifilesrc.html#INIFileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mincfg.INIFileSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>An INI-file source of configuration information
 Note that if the top level of the file is not a dict, it will be set as the value of an empty key.</p>
 </dd></dl>
@@ -87,12 +83,12 @@ Note that if the top level of the file is not a dict, it will be set as the valu
 <section id="yaml-files">
 <h3>.yaml files<a class="headerlink" href="#yaml-files" title="Permalink to this heading">¶</a></h3>
 <p>Using <a class="reference external" href="https://pypi.org/project/python-dotenv/">python-dotenv</a></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install mincfg<span class="o">[</span>yaml<span class="o">]</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mincfg<span class="o">[</span>yaml<span class="o">]</span>
 </pre></div>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="mincfg.YamlFileSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mincfg.</span></span><span class="sig-name descname"><span class="pre">YamlFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/sources/yamlfilesrc.html#YamlFileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mincfg.YamlFileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mincfg.</span></span><span class="sig-name descname"><span class="pre">YamlFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mincfg/sources/yamlfilesrc.html#YamlFileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mincfg.YamlFileSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>A YAML file source of configuration information.
 Note that if the top level of the yaml file is not a dict, it will be set as the value of an empty key.</p>
 </dd></dl>
@@ -173,8 +169,8 @@ all derived from</p>
       &copy;2021, Paul Jimenez.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
       <a href="_sources/sources.rst.txt"
