@@ -23,13 +23,15 @@ Release v\ |version|.
 
     from mincfg import MergedConfiguration, YamlFileSource
 
-    mycfg = MergedConfiguration([YamlFileSource('/etc/myapp.yaml'), YamlFileSource('~/.myapp.yaml')])
+    mycfg = MergedConfiguration([YamlFileSource('/etc/myapp.yaml'), 
+                                 YamlFileSource('~/.myapp.yaml')])
 
 *and more complicated things reasonably...*
 
 .. code-block:: python
 
-    from mincfg import MergedConfiguration, YamlFileSource, OSEnvironSource, DictSource
+    from mincfg import MergedConfiguration, YamlFileSource,\
+                       OSEnvironSource, DictSource
    
     defaults = DictSource({'url': 'https://example.com', 
                            'user': 'testuser', 
