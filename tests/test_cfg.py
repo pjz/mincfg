@@ -45,7 +45,7 @@ def test_as_dict():
     assert c['c']['ca'] == '131'
     assert c['c']['cb'] == '132'
 
-    c = config.as_dict('c')
+    c = config.as_dict(['c'])
     assert c['ca'] == '131'
     assert c['cb'] == '132'
 
@@ -57,11 +57,10 @@ def test_as_ns():
     c = config.as_ns()
     assert c.a == '11'
     assert c.b == '12'
-    # TODO: make .as_ns() work recursively
-    # assert c.c.ca == '131'
-    # assert c.c.cb == '132'
+    assert c.c.ca == '131'
+    assert c.c.cb == '132'
 
-    c = config.as_ns('c')
+    c = config.as_ns(['c'])
     assert c.ca == '131'
     assert c.cb == '132'
 

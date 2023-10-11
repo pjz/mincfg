@@ -14,6 +14,7 @@ class DictSource(ConfigSource):
     """
     Uses the supplied dict as a config source.  Useful for defaults.
     """
+
     def __init__(self, cfg_dict: CfgDict):
         self.cfg = cfg_dict
 
@@ -29,6 +30,7 @@ class KeySplittingDictSource(ConfigSource):
     Uses a dict whose keys are split into a hierarcy as a config source.
     eg. a = 1, b.c = 2, b.d = 3 => { a:1, b: {c:2, d:3} }
     """
+
     def __init__(self, cfg_dict_lambda, sep: str, prefix: str):
         self.sep = sep
         self.cfg_dict_lambda = cfg_dict_lambda
@@ -62,4 +64,3 @@ class OSEnvironSource(KeySplittingDictSource):
 
     def __init__(self, prefix: str):
         super().__init__(lambda: os.environ, '_', prefix)
-

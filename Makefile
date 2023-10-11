@@ -24,7 +24,10 @@ DEV_ENV=$(VIRTUAL_ENV)/bin/pytest
 
 PIP_VENDORED_FLAGS=$(if $(PIP_VENDORED_DIR),-f $(PIP_VENDORED_DIR),)
 
-$(DEV_ENV): pyproject.toml
+$(DEV_REQS): pyproject.toml
+	pip-compile -q --resolver=backtracking --extra=dev,all --output-file=$@ $<
+
+$(DEV_ENV): $(DEV_REQS)
 	@if [ -z "$$VIRTUAL_ENV" ] ; then \
 	    echo "You should be in a virtualenv or other isolated environment before running this."; \
 		exit 1; \
@@ -32,9 +35,6 @@ $(DEV_ENV): pyproject.toml
 	pip install pip-tools
 	pip-sync $(DEV_REQS)
 	pip install -e .[all]
-
-$(DEV_REQS): pyproject.toml
-	pip-compile -q --resolver=backtracking --extra=dev,all --output-file=$@ $<
 
 .PHONY: dev
 dev: $(DEV_ENV)

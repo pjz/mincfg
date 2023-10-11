@@ -25,5 +25,5 @@ class INIFileSource(ConfigSource):
             return dict()
         val = ConfigObj(self.filename)
         if not isinstance(val, dict):
-            val = { '': val }
+            val = {'': val}
         return val

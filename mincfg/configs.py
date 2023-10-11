@@ -6,6 +6,7 @@ MergedConfiguration merges multiple sources linearly, with later sources taking 
 """
 
 import logging
+from copy import deepcopy
 from types import SimpleNamespace
 from configparser import ConfigParser
 from typing import Dict, List, Optional
@@ -38,6 +39,7 @@ class MergedConfiguration:
 
     :param sources: a list of :ref:ConfigSource objects to merge, with later ones overriding earlier ones
     """
+
     def __init__(self, sources: Optional[List[ConfigSource]] = None):
         self.sources: List[ConfigSource] = [] if sources is None else sources
         self._cfg: Optional[CfgDict] = None
@@ -70,7 +72,7 @@ class MergedConfiguration:
             self.load()
         ns = [] if namespace is None else namespace
         assert self._cfg is not None
-        in_ns = self._cfg
+        in_ns = deepcopy(self._cfg)
         for subns in ns:
             in_ns = in_ns.setdefault(subns, dict())
         if not isinstance(in_ns, dict):
@@ -100,13 +102,18 @@ class MergedConfiguration:
             raise KeyError(msg)
         return parser(in_ns.get(k, default))
 
-    def as_ns(self, namespace: Optional[List[str]] = None) -> SimpleNamespace:
+    def as_ns(self, namespace: Optional[List[str]]=None) -> SimpleNamespace:
         """
         return the config, or a namespace within it, as a SimpleNamespace
 
         :param namespace: the namespace to return as a SimpleNamespace.  If unspecified, return the entire config.
         """
-        return SimpleNamespace(**self.as_dict(namespace))
+        nsdict = self.as_dict(namespace)
+        for k, v in nsdict.items():
+            if not isinstance(v, dict):
+                continue
+            nsdict[k] = self.as_ns((namespace or []) + [k])
+        return SimpleNamespace(**nsdict)
 
     def as_configparser(self, namespace: Optional[List[str]]=None) -> ConfigParser:
         """
