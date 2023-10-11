@@ -20,3 +20,17 @@ class SubsetSource(ConfigSource):
     def as_dict(self) -> CfgDict:
         full = self.source.as_dict()
         return {k: v for k, v in full.items() if k in self.keys}
+
+
+class SubNamepaceSource(ConfigSource):
+
+    def __init__(self, source: ConfigSource, ns: Iterable[str]):
+        self.source = source
+        self.ns = set(ns)
+
+    def as_dict(self) -> CfgDict:
+        result = self.source.as_dict()
+        for subns in self.ns:
+            if subns in result:
+                result = result[subns]
+        return result
