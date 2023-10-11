@@ -1,6 +1,6 @@
 [project]
 name = "mincfg"
-version = "0.8"
+version = "0.9"
 requires-python = ">=3.7"
 description = "Minimal Application Configuration"
 readme = "README.md"
