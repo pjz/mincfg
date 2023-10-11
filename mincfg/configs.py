@@ -33,6 +33,9 @@ def _recursive_dict_update(main: Dict, update: Dict):
             main[lk] = v
 
 
+DEFAULT_SENTINEL = object()
+
+
 class MergedConfiguration:
     """
     Merges configuration sources
@@ -79,7 +82,7 @@ class MergedConfiguration:
             raise ValueError(f"namespace {'.'.join(ns)} points to a key, not a dict")
         return in_ns
 
-    def get(self, key: str, namespace: Optional[List[str]]=None, default=None, parser=str, raise_error=True, doc=None):
+    def get(self, key: str, namespace: Optional[List[str]]=None, default=DEFAULT_SENTINEL, parser=str, raise_error=True, doc=None):
         """
         get a single config key
 
@@ -95,12 +98,16 @@ class MergedConfiguration:
         in_ns = self.as_dict()
         for subns in ns:
             in_ns = in_ns[subns]
-        if raise_error and default is None and k not in in_ns:
-            msg = f"Missing config key {'.'.join(ns + [k])}"
+        if k in in_ns:
+            return parser(in_ns.get(k, default))
+        if default is not DEFAULT_SENTINEL:
+            return default
+        if raise_error:
+            msg = f"Missing config key {'.'.join(ns + [k])!r}"
             if doc:
                 msg += f": {doc}"
             raise KeyError(msg)
-        return parser(in_ns.get(k, default))
+        return None
 
     def as_ns(self, namespace: Optional[List[str]]=None) -> SimpleNamespace:
         """
